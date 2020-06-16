@@ -3,6 +3,9 @@ import logo from './logo.svg';
 import './App.css';
 import Axios from 'axios';
 
+import { connect } from 'react-redux'
+
+
 function App() {
   const [posts, setPosts] = useState([]);
   useEffect(() => {

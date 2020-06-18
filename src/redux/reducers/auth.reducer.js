@@ -1,10 +1,8 @@
 export function AuthReducer(state = [], action) {
     switch (action.type) {
         case 'login':
-            
-            break;
-    
+            return [...state]     
         default:
-            break;
+            return [...state]     
     }
 }

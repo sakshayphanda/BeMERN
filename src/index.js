@@ -7,11 +7,11 @@ import store from './redux/store'
 
 console.log(store);
 
-
-
-const app = (<Provider store={store}>
+const app = (
+<Provider store={store}>
   <App />
-</Provider>);
+</Provider>
+);
 
 ReactDOM.render(
   app,

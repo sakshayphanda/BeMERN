@@ -4,7 +4,7 @@ import './App.css';
 import Axios from 'axios';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux'
-import login from '../components/login';
+import login from '../login.container/login';
 
 function App() {
   const [posts, setPosts] = useState([]); // react hooks

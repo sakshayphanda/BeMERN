@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import logo from '../assets/logo.svg';
 import './App.css';
 import Axios from 'axios';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux'
-import login from './components/login';
+import login from '../components/login';
 
 function App() {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]); // react hooks
   useEffect(() => {
     async function fetch() {
       const response = await Axios.get('https://jsonplaceholder.typicode.com/todos/');

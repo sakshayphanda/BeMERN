@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import logo from '../../assets/logo.svg';
 import './App.css';
-import Axios from 'axios';
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux'
-import login from '../login.container/login';
+import Login from '../login.container/login';
+import * as postsAPIs from '../../redux/effects/posts/post.effects'
 
-function App() {
+function App({props}) {
+  // console.log(state, 'APp');
+  
   const [posts, setPosts] = useState([]); // react hooks
   const [newPost, setPost] = useState('');
   const [currentTime, setTime] = useState(new Date().toLocaleTimeString());
@@ -16,29 +18,22 @@ function App() {
   }, 1000);
 
   useEffect(() => {
-    async function fetch() {
-      const response = await Axios.get('https://jsonplaceholder.typicode.com/posts/');
-      console.log(response.data);
-      setPosts(response.data);
-    }
-    fetch();
-  }, [newPost]);
+    postsAPIs.readPosts().then(
+      response => {
+        setPosts(response.data);
+      }
+    );
+  }, []);
 
-  async function hitApi() {
-    await Axios.post('https://jsonplaceholder.typicode.com/posts', {
-      title: newPost,
-      body: 'bar',
-      userId: 1
-    });
-
-    
-
-    setPosts(posts => [
+  function createPost() {
+    postsAPIs.create(newPost)
+    setPosts((posts) => [
       {
-      title: newPost,
-      body: 'bar',
-      userId: 1
-      }, ...posts]);
+        "userId": 1,
+        "title": newPost,
+        "body": "et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\nvoluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut"
+      },  ...posts
+    ]);
   }
 
   const routing = (
@@ -47,7 +42,9 @@ function App() {
         <Link to="/login">Login</Link>
       </div>
       <Switch>
-        <Route exact path="/login" component={login} />
+        <Route exact path="/login">
+          <Login store={props}></Login>
+        </Route>
       </Switch>
     </Router>
   );
@@ -63,9 +60,9 @@ function App() {
       </div>
 
       <div>
-        <input type="text" onBlur={(event) => { setPost(event.target.value) }}/>
+        <input type="text" onChange={(event) => { setPost(event.target.value) }}/>
         <p>{newPost}</p>
-        <button onClick={hitApi}>Add</button>
+        <button onClick={() => createPost()}>Add</button>
         <div>
         {
           posts.map(

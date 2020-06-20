@@ -1,7 +1,3 @@
-.App {
-  text-align: center;
-}
-
 .App-logo {
   height: 40px;
   pointer-events: none;
@@ -12,6 +8,15 @@
     animation: App-logo-spin infinite 10s linear;
   }
 }
+
+li {
+  padding: 10px;
+  background: #eee9e9;
+  margin: 10px;
+  border-radius: 5px;
+  list-style: none;
+}
+
 
 .App-header {
   background-color: #004de7;

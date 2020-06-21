@@ -6,9 +6,8 @@ import { connect } from 'react-redux'
 import Login from '../login.container/login';
 import * as postsAPIs from '../../redux/effects/posts/post.effects'
 import * as Mat from '@material-ui/core';
-
-function App(props) {
-  const [posts, setPosts] = useState([]); // react hooks
+function App({posts, fetchPostDispatch, deletePostDispatch, createPostDispatch}) {  
+  // const [posts, setPosts] = useState([]); // react hooks
   const [newPost, setPost] = useState('');
   const [currentTime, setTime] = useState(new Date().toLocaleTimeString());
 
@@ -17,30 +16,32 @@ function App(props) {
   }, 1000);
 
   useEffect(() => {
-    postsAPIs.readPosts().then(
-      response => {
-        setPosts(response.data);
-      }
-    );
+    fetchPostDispatch();
   }, []);
 
   function createPost() {
-    postsAPIs.create(newPost)
-    setPosts((posts) => [
-      {
-        "userId": 1,
-        "title": newPost,
-        "body": "et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\nvoluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut"
-      }, ...posts
-    ]);
+    const obj = {
+          "userId": 1,
+          "title": newPost,
+          "body": "et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\nvoluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut"
+        };
+    createPostDispatch(obj);
+  //  postsAPIs.create(newPost)
+    // setPosts((posts) => [
+    //   {
+    //     "userId": 1,
+    //     "title": newPost,
+    //     "body": "et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\nvoluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut"
+    //   }, ...posts
+    // ]);
     setPost(() => '');
   }
   function deletePost(index) {
-    setPosts((posts) => {
-      const newPosts = [...posts];
-      newPosts.splice(index, 1);
-      return newPosts;
-    });
+    // setPosts((posts) => {
+    //   const newPosts = [...posts];
+    //   newPosts.splice(index, 1);
+    //   return newPosts;
+    // });
   }
 
   const routing = (
@@ -50,7 +51,7 @@ function App(props) {
       </div>
       <Switch>
         <Route exact path="/login">
-          <Login store={props}></Login>
+          <Login></Login>
         </Route>
       </Switch>
     </Router>
@@ -76,7 +77,7 @@ function App(props) {
           <div>
             {posts.map((item, index) => (<li>
               {item.title}
-              <Mat.Button variant="outlined" color="primary" onClick={() => { deletePost(index) }}>Delete</Mat.Button>
+              <Mat.Button variant="outlined" color="primary" onClick={() => { deletePostDispatch(index)}}>Delete</Mat.Button>
             </li>))}
           </div>
         </div>
@@ -89,14 +90,15 @@ const mapStateToProps = (store) => {
   console.log(store, 'store updated');
   return {
     store: store,
-    posts: store.posts
+    posts: store.Posts
   }
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    createPostDispatch: () => dispatch({ type: 'create' }),
-    deletePostDispatch: id => dispatch({ type: 'delete' }),
+    createPostDispatch: (post) => dispatch(postsAPIs.createPost(post)),
+    deletePostDispatch: index => dispatch({ type: 'delete', payload: index}),
     updatePostDispatch: id => dispatch({ type: 'update' }),
+    fetchPostDispatch: id => dispatch(postsAPIs.fetchPosts()),
   }
 }
 

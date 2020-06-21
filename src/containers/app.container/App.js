@@ -7,9 +7,7 @@ import Login from '../login.container/login';
 import * as postsAPIs from '../../redux/effects/posts/post.effects'
 import * as Mat from '@material-ui/core';
 
-function App({ props }) {
-  // console.log(state, 'APp');
-
+function App(props) {
   const [posts, setPosts] = useState([]); // react hooks
   const [newPost, setPost] = useState('');
   const [currentTime, setTime] = useState(new Date().toLocaleTimeString());
@@ -41,7 +39,6 @@ function App({ props }) {
     setPosts((posts) => {
       const newPosts = [...posts];
       newPosts.splice(index, 1);
-
       return newPosts;
     });
   }
@@ -66,12 +63,12 @@ function App({ props }) {
         <div style={{ width: '100%', display: 'flex' }}>React todo list <span style={{ marginLeft: 'auto' }}>{currentTime}</span></div>
       </header>
       <div className="App-container">
-        <div style={{ margin: '20px' }}>
+        {/* <div style={{ margin: '20px' }}>
           {routing}
-        </div>
+        </div> */}
 
         <div>
-          <Mat.TextField value={newPost} id="outlined-basic" label="Create Post" variant="outlined" onChange={(event) => { setPost(event.target.value) }} />
+          <Mat.TextField error={false} value={newPost} id="outlined-basic" label="Create Post" variant="outlined" onChange={(event) => { setPost(event.target.value) }} />
           <p>{newPost}</p>
           <Mat.Button variant="contained" color="primary" onClick={() => createPost()}>
             Add
@@ -88,4 +85,19 @@ function App({ props }) {
   );
 }
 
-export default App;
+const mapStateToProps = (store) => {
+  console.log(store, 'store updated');
+  return {
+    store: store,
+    posts: store.posts
+  }
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    createPostDispatch: () => dispatch({ type: 'create' }),
+    deletePostDispatch: id => dispatch({ type: 'delete' }),
+    updatePostDispatch: id => dispatch({ type: 'update' }),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

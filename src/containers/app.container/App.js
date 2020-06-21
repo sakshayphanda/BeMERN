@@ -6,18 +6,22 @@ import { connect } from 'react-redux'
 import Login from '../login.container/login';
 import * as postsAPIs from '../../redux/effects/posts/post.effects'
 import * as Mat from '@material-ui/core';
+
 function App({posts, fetchPostDispatch, deletePostDispatch, createPostDispatch}) {  
-  // const [posts, setPosts] = useState([]); // react hooks
   const [newPost, setPost] = useState('');
   const [currentTime, setTime] = useState(new Date().toLocaleTimeString());
-
-  setInterval(() => {
+  const interval = setInterval(() => {
     setTime(new Date().toLocaleTimeString())
   }, 1000);
 
   useEffect(() => {
     fetchPostDispatch();
+    return () => {
+      //clean up code goes here
+      clearInterval(interval);
+    }
   }, []);
+
 
   function createPost() {
     const obj = {
@@ -26,24 +30,8 @@ function App({posts, fetchPostDispatch, deletePostDispatch, createPostDispatch})
           "body": "et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\nvoluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut"
         };
     createPostDispatch(obj);
-  //  postsAPIs.create(newPost)
-    // setPosts((posts) => [
-    //   {
-    //     "userId": 1,
-    //     "title": newPost,
-    //     "body": "et iusto sed quo iure\nvoluptatem occaecati omnis eligendi aut ad\nvoluptatem doloribus vel accusantium quis pariatur\nmolestiae porro eius odio et labore et velit aut"
-    //   }, ...posts
-    // ]);
     setPost(() => '');
   }
-  function deletePost(index) {
-    // setPosts((posts) => {
-    //   const newPosts = [...posts];
-    //   newPosts.splice(index, 1);
-    //   return newPosts;
-    // });
-  }
-
   const routing = (
     <Router>
       <div>

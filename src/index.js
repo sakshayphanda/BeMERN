@@ -5,6 +5,7 @@ import App from './containers/app.container/App';
 import { Provider } from 'react-redux'
 import store from './redux/store'
 
+
 console.log(store);
 
 const app = (

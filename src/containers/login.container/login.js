@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import React from 'react';
+import React, {useState} from 'react';
 
 function Login(props) {
     console.log(props);
@@ -7,9 +7,12 @@ function Login(props) {
         <div className="Login">
             <button onClick={() => {
                props.dispatchLogin();
-            }}> Login
+            }}> Dispatch Action
             </button>
-           Login Component
+            {props.text && ( // equavalent to ng-if
+           <p>{props.text}</p>
+            )
+            }
         </div>
     );
 }
@@ -17,7 +20,8 @@ function Login(props) {
 const mapStateToProps = (store) => {
     console.log(store, 'store updated');
     return {
-        user: store
+        store: store,
+        text: store.auth.text
     }
 };
 const mapDispatchToProps = (dispatch) => {

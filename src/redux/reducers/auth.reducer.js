@@ -1,10 +1,12 @@
-export function AuthReducer(state = [], action) {
+export function AuthReducer(state = {
+    text: ''
+}, action) {
     switch (action.type) {
         case 'login':
-            console.log('login dispatch');
-            
-            return [...state]     
+            const newState = {...state};
+            newState.text = 'Dispatched'
+            return {...newState};   
         default:
-            return [...state]     
+            return {...state};  
     }
 }

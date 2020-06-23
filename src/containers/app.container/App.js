@@ -71,6 +71,8 @@ function App({posts, fetchPostDispatch, deletePostDispatch, createPostDispatch})
         </div>
       </div>
     </div>
+
+    
   );
 }
 
